@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './sidebar.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,11 +12,33 @@ import HeadsetIcon from '@mui/icons-material/Headset';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useSelector } from 'react-redux';
 import { selectUser } from './userSlice';
-import { auth } from './firebase';
+import db, { auth } from './firebase';
 
 
 function Sidebar() {
     const user = useSelector(selectUser);
+    const [channels, setChannels] = useState([]);
+
+    useEffect(() => {
+        db.collection('channels').onSnapshot(snapshot => {
+            setChannels(
+                snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                 channel: doc.data(),
+               }))
+            )
+        }); 
+    }, []);
+
+    const handleAddChannel = () => {
+        const channelName = prompt('Enter channel name');
+
+        if (channelName) {
+            db.collection('channels').add({
+                channelName: channelName,
+            });
+        }
+    }
 
   return (
     <div className="sidebar">
@@ -32,14 +54,17 @@ function Sidebar() {
                     <h4>Text Channels</h4>
                 </div>
 
-                <AddIcon className="sidebar__addChannel"/>
+                <AddIcon className="sidebar__addChannel" onClick={handleAddChannel}/>
             </div>
 
             <div className='sidebar__channelsList'>
-                <SidebarChannel/>
-                <SidebarChannel/>
-                <SidebarChannel/>
-                <SidebarChannel/>
+                {channels.map(({id, channel}) => (
+                     <SidebarChannel 
+                     key={id} 
+                     id={id} 
+                     channelName={channel.channelName}
+                     />
+                ))}
             </div>
         </div>
         <div className='sidebar__voice'>
