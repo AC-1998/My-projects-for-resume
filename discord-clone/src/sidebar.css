@@ -30,6 +30,15 @@
     color: white;
 
 }
+.sidebar__addRemove {
+    cursor: pointer;
+
+}
+
+.sidebar__addRemove:hover {
+    color: white;
+
+}
 
 .sidebar__channelsHeader {
     display: flex;

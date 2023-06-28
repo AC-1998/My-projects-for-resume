@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './sidebar.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import SidebarChannel from './SidebarChannel';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -40,6 +41,16 @@ function Sidebar() {
         }
     }
 
+    /* const handleRemoveChannel = (channelId) => {
+        const channelName = prompt('Enter channel name')
+
+        if (channelName) {
+            db.collection('channels').doc(channelId).delete();
+        } 
+      };
+    */
+
+
   return (
     <div className="sidebar">
         <div className="sidebar__top">
@@ -55,6 +66,7 @@ function Sidebar() {
                 </div>
 
                 <AddIcon className="sidebar__addChannel" onClick={handleAddChannel}/>
+                <RemoveIcon className='sidebar__removeChannel' /*onClick={handleRemoveChannel}*//>
             </div>
 
             <div className='sidebar__channelsList'>
@@ -63,6 +75,7 @@ function Sidebar() {
                      key={id} 
                      id={id} 
                      channelName={channel.channelName}
+                     /*removeChannel={handleRemoveChannel}*/
                      />
                 ))}
             </div>
